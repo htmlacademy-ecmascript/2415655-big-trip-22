@@ -1,25 +1,26 @@
 import NewFilterForm from '../view/filter-view.js';
 import NewSortEvent from '../view/sort-head-view.js';
-import NewRoute from '../view/route-view.js';
+import NewAddList from '../view/add-list-view.js';
 
 import {render} from '../render.js';
 
 export default class BoardPresenter {
   sortComponent = new NewSortEvent();
-  infoComponent = new NewRoute();
   filterComponent = new NewFilterForm();
+  addListComponent = new NewAddList();
 
-
-  constructor({headerContainer, sortContainer, infoContainer}) {
+  constructor({headerContainer, sortContainer, listContainer}) {
     this.headerContainer = headerContainer;
     this.sortContainer = sortContainer;
-    this.infoContainer = infoContainer;
+    this.listContainer = listContainer;
   }
 
   init() {
     render(this.sortComponent, this.sortContainer);
-    render(this.infoComponent, this.infoContainer);
     render(this.filterComponent, this.headerContainer);
 
+    for (let i = 0; i < 3; i++) {
+      render(this.addListComponent, this.listContainer);
+    }
   }
 }

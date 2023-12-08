@@ -1,25 +1,22 @@
 import BoardPresenter from './presenter/board-presenter.js';
 
-
-import NewAddList from './view/add-list-view.js';
+import NewRoute from './view/route-view.js';
 import NewEditPoint from './view/edit-point-view.js';
-import {render} from './render.js';
+import {render,RenderPosition} from './render.js';
 
 const siteMainElement = document.querySelector('.page-body');
-const siteFilterElement = siteMainElement.querySelector('.trip-controls__filters');
 const siteSortElement = siteMainElement.querySelector('.trip-events');
 const siteInfoElement = siteMainElement.querySelector('.trip-main');
+const siteFilterElement = siteMainElement.querySelector('.trip-controls__filters');
+
 
 const boardPresenter = new BoardPresenter({
-  headerContainer: siteFilterElement,
   sortContainer: siteSortElement,
-  infoContainer: siteInfoElement
+  headerContainer: siteFilterElement,
+  listContainer: siteSortElement
 });
-
-render(new NewEditPoint(), siteSortElement);
-render(new NewAddList(), siteSortElement);
-
 
 boardPresenter.init();
 
-
+render(new NewRoute(), siteInfoElement, RenderPosition.AFTERBEGIN);
+render(new NewEditPoint(), siteSortElement);
