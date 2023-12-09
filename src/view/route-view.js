@@ -16,7 +16,7 @@ function createRoute() {
   `;
 }
 
-export default class NewRoute {
+export default class RouteView {
   getTemplate() {
     return createRoute();
   }

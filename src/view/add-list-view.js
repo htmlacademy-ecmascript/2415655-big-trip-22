@@ -337,7 +337,7 @@ function createAddList() {
 </ul>`;
 }
 
-export default class NewAddList {
+export default class AddListView {
   getTemplate() {
     return createAddList();
   }

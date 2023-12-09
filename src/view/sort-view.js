@@ -29,7 +29,7 @@ function createSortEvent() {
 </form>`;
 }
 
-export default class NewSortEvent {
+export default class SortView {
   getTemplate() {
     return createSortEvent();
   }

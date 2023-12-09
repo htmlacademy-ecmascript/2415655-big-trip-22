@@ -26,7 +26,7 @@ function createFilterForm() {
 </form>`;
 }
 
-export default class NewFilterForm {
+export default class FilterView {
   getTemplate() {
     return createFilterForm();
   }

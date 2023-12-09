@@ -1,13 +1,13 @@
-import NewFilterForm from '../view/filter-view.js';
-import NewSortEvent from '../view/sort-head-view.js';
-import NewAddList from '../view/add-list-view.js';
+import FilterView from '../view/filter-view.js';
+import SortView from '../view/sort-view.js';
+import AddListView from '../view/add-list-view.js';
 
 import {render} from '../render.js';
 
 export default class BoardPresenter {
-  sortComponent = new NewSortEvent();
-  filterComponent = new NewFilterForm();
-  addListComponent = new NewAddList();
+  sortComponent = new SortView();
+  filterComponent = new FilterView();
+  addListComponent = new AddListView();
 
   constructor({headerContainer, sortContainer, listContainer}) {
     this.headerContainer = headerContainer;

@@ -1,7 +1,7 @@
 import BoardPresenter from './presenter/board-presenter.js';
 
-import NewRoute from './view/route-view.js';
-import NewEditPoint from './view/edit-point-view.js';
+import RouteView from './view/route-view.js';
+import EditPointView from './view/edit-point-view.js';
 import {render,RenderPosition} from './render.js';
 
 const siteMainElement = document.querySelector('.page-body');
@@ -18,5 +18,5 @@ const boardPresenter = new BoardPresenter({
 
 boardPresenter.init();
 
-render(new NewRoute(), siteInfoElement, RenderPosition.AFTERBEGIN);
-render(new NewEditPoint(), siteSortElement);
+render(new RouteView(), siteInfoElement, RenderPosition.AFTERBEGIN);
+render(new EditPointView(), siteSortElement);
