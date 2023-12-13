@@ -1,5 +1,5 @@
-import { getRandomArrayElement } from "../utils.js";
-import { EVENT,CITY } from "../const.js";
+import { getRandomArrayElement } from '../utils.js';
+import { EVENT,CITY } from '../const.js';
 
 const mockTasks = [
   {

@@ -6,8 +6,6 @@ import EditPointView from '../view/edit-point-view.js';
 import RouteView from '../view/route-view.js';
 import {render,RenderPosition} from '../render.js';
 
-const EVENT_NUM = 3;
-
 export default class BoardPresenter {
   addListComponent = new ContainerListView();
 
@@ -17,14 +15,17 @@ export default class BoardPresenter {
   addPointComponent = new AddPointView();
   routComponent = new RouteView();
 
-  constructor({filterContainer, sortContainer, listContainer, routeContainer}) {
+  constructor({filterContainer, sortContainer, listContainer, routeContainer, tasksModel}) {
     this.filterContainer = filterContainer;
     this.sortContainer = sortContainer;
     this.listContainer = listContainer;
     this.routeContainer = routeContainer;
+    this.tasksModel = tasksModel;
   }
 
   init() {
+    this.boardTasks = [...this.tasksModel.getTasks()];
+
     render(this.routComponent, this.routeContainer, RenderPosition.AFTERBEGIN);
     render(this.sortComponent, this.sortContainer);
     render(this.filterComponent, this.filterContainer);
@@ -32,8 +33,8 @@ export default class BoardPresenter {
     render(this.editComponent, this.addListComponent.getElement());
 
 
-    for (let i = 0; i < EVENT_NUM; i++) {
-      render(this.addPointComponent, this.addListComponent.getElement());
+    for (let i = 0; i < this.boardTasks.length; i++) {
+      render(this.addPointComponent({task: this.boardTasks[i]}), this.addListComponent.getElement());
     }
 
   }
