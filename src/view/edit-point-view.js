@@ -1,24 +1,33 @@
 import {createElement} from '../render.js';
+import { EVENT_TYPES } from '../const.js';
 
-function createEditPoint() {
+const createEditPoint = (point,destinations,offers) => {
+  const pointDestination = destinations.find((dest) => dest.id === point.destination);
+  const typeOffers = offers.find((off) => off.type === point.type).offers;
+  const pointOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
+  const {basePrice, type} = point;
+  const {name, decription, pictures} = pointDestination || {};
+  const pointId = point.id || 0;
   return `
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
                   <div class="event__type-wrapper">
-                    <label class="event__type  event__type-btn" for="event-type-toggle-1">
+                    <label class="event__type  event__type-btn" for="event-type-toggle-${pointId}">
                       <span class="visually-hidden">Choose event type</span>
-                      <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+                      <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
                     </label>
-                    <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+                    <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${pointId}" type="checkbox">
 
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
+                      ${EVENT_TYPES.map((pointType) => (
+                          `<div class="event__type-item">
+                            <input id="event-type-${pointType}-${pointId}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${pointType}" ${pointType === type ? 'checked' : ''}>
+                            <label class="event__type-label  event__type-label--${pointType}" for="event-type-${pointType}-${pointId}">${pointType}</label>
+                          </div>`
+                      )).join('')}
 
-                        <div class="event__type-item">
-                          <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-                          <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
-                        </div>
 
                         <div class="event__type-item">
                           <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
@@ -163,11 +172,17 @@ function createEditPoint() {
                 </section>
               </form>
            `;
-}
+};
 
 export default class EditPointView {
+  constructor(point, destinations, offers) {
+    this.point = point;
+    this.destinations = destinations;
+    this.offers = offers;
+  }
+
   getTemplate() {
-    return createEditPoint();
+    return createEditPoint(this.point, this.destinations, this.offers);
   }
 
   getElement() {
