@@ -15,27 +15,27 @@ export default class BoardPresenter {
   addPointComponent = new AddPointView();
   routComponent = new RouteView();
 
-  constructor({filterContainer, sortContainer, listContainer, routeContainer, tasksModel}) {
+  constructor({filterContainer, sortContainer, listContainer, routeContainer, pointModel}) {
     this.filterContainer = filterContainer;
     this.sortContainer = sortContainer;
     this.listContainer = listContainer;
     this.routeContainer = routeContainer;
-    this.tasksModel = tasksModel;
+    this.pointModel = pointModel;
   }
 
   init() {
-    this.boardTasks = [...this.tasksModel.getTasks()];
+    const offers = this.pointModel.getOffers();
+    const destinations = this.pointModel.getDestinations();
+    const points = this.pointModel.getPoints();
 
     render(this.routComponent, this.routeContainer, RenderPosition.AFTERBEGIN);
     render(this.sortComponent, this.sortContainer);
     render(this.filterComponent, this.filterContainer);
     render(this.addListComponent, this.listContainer);
-    render(this.editComponent, this.addListComponent.getElement());
+    render(new EditPointView(points[0], destinations, offers), this.addListComponent.getElement());
 
-
-    for (let i = 0; i < this.boardTasks.length; i++) {
-      render(this.addPointComponent({task: this.boardTasks[i]}), this.addListComponent.getElement());
+    for (const point of points) {
+      render(new AddPointView(point, destinations, offers), this.addListComponent.getElement());
     }
-
   }
 }
