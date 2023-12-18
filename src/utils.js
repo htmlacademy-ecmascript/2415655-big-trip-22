@@ -1,8 +1,14 @@
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
-const DATE_FORMAT = 'D MMMM';
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+const DATE_FORMAT = 'MMM D';
 const TIME_FORMAT = 'hh:mm';
 const DATE_FORMAT_FULL = 'DD/MM/YY hh:mm';
+
 
 function getRandomArrayElement(items) {
   return items[Math.floor(Math.random() * items.length)];
@@ -17,7 +23,7 @@ function formatDateFull(dueDate) {
 }
 
 function formatTime(dueTime) {
-  return dueTime ? dayjs(dueTime).format(TIME_FORMAT) : '';
+  return dueTime ? dayjs.utc(dueTime).format(TIME_FORMAT) : '';
 }
 
 function differenceTime(toTime, fromTime) {
