@@ -1,20 +1,20 @@
 import BoardPresenter from './presenter/board-presenter.js';
-import PointModel from './model/point-model.js';
+import TripModel from './model/trip-model.js';
 
-const siteSortElement = document.querySelector('.trip-events');
-const siteInfoElement = document.querySelector('.trip-main');
-const siteFilterElement = document.querySelector('.trip-controls__filters');
+const sortElement = document.querySelector('.trip-events');
+const infoElement = document.querySelector('.trip-main');
+const filterElement = document.querySelector('.trip-controls__filters');
 
-const pointModel = new PointModel();
-pointModel.init();
+const tripModel = new TripModel();
+tripModel.init();
 
 
 const boardPresenter = new BoardPresenter({
-  routeContainer: siteInfoElement,
-  sortContainer: siteSortElement,
-  filterContainer: siteFilterElement,
-  listContainer: siteSortElement,
-  pointModel: pointModel,
+  routeContainer: infoElement,
+  sortContainer: sortElement,
+  filterContainer: filterElement,
+  listContainer: sortElement,
+  tripModel: tripModel,
 });
 
 boardPresenter.init();

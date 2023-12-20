@@ -62,7 +62,14 @@ const createEditPoint = (point,destinations,offers) => {
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-                  <button class="event__reset-btn" type="reset">Cancel</button>
+                  <button class="event__reset-btn" type="reset">${point.id ? 'Delete' : 'Cancel'}</button>
+                  ${point.id ? (
+    `
+                    <button class="event__rollup-btn" type="button">
+                       <span class="visually-hidden">Open event</span>
+                    </button>
+                    `
+  ) : ''}
                 </header>
 
                 <section class="event__details">
@@ -89,7 +96,7 @@ const createEditPoint = (point,destinations,offers) => {
     ` <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${description}</p>
-                  ${pictures.length ? (
+                  ${pictures.length > 0 ? (
       `<div class="event__photos-container">
                       <div class="event__photos-tape">
                       ${pictures.map((pic)=>`<img class="event__photo" src="${pic.src}" alt="${pic.description}">`)}

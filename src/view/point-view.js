@@ -1,7 +1,7 @@
 import {createElement} from '../render.js';
 import { formatDate, formatTime, differenceTime } from '../utils.js';
 
-const createAddPoint = (point,destinations,offers) => {
+const createPointTemplate = (point, destinations, offers) => {
   const {basePrice, isFavorite, dateFrom, dateTo, type} = point;
   const typeOffers = offers.find((off) => off.type === point.type).offers;
   const pointOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
@@ -51,7 +51,7 @@ const createAddPoint = (point,destinations,offers) => {
 `;
 };
 
-export default class AddPointView {
+export default class PointView {
   constructor(point, destinations, offers) {
     this.point = point;
     this.destinations = destinations;
@@ -59,7 +59,7 @@ export default class AddPointView {
   }
 
   getTemplate() {
-    return createAddPoint(this.point, this.destinations, this.offers);
+    return createPointTemplate(this.point, this.destinations, this.offers);
   }
 
   getElement() {

@@ -2,7 +2,7 @@ import {destinations} from '../mock/destinations.js';
 import {offers} from '../mock/offers.js';
 import {points} from '../mock/point.js';
 
-export default class PointModel {
+export default class TripModel {
   consrtuctor() {
     this.destinations = [];
     this.offers = [];
