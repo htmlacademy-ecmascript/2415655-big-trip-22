@@ -19,7 +19,7 @@ function formatDate(dueDate) {
 }
 
 function formatDateFull(dueDate) {
-  return dueDate ? dayjs(dueDate).format(DATE_FORMAT_FULL) : '';
+  return dueDate ? dayjs.utc(dueDate).format(DATE_FORMAT_FULL) : '';
 }
 
 function formatTime(dueTime) {
@@ -27,9 +27,10 @@ function formatTime(dueTime) {
 }
 
 function differenceTime(toTime, fromTime) {
-  const diffMin = dayjs(toTime).diff(fromTime, 'minute');
-  const diffHour = dayjs(toTime).diff(fromTime, 'hour');
-  return diffMin < 60 ? `${diffMin}m` : `${diffHour}h`;
+  const diffMin = dayjs.utc(toTime).diff(fromTime, 'minute');
+  const diffHour = dayjs.utc(toTime).diff(fromTime, 'hour');
+  const diffResult = diffMin - diffHour * 60;
+  return diffMin < 60 ? `${diffMin + 1}m` : `${diffHour}h ${diffResult + 1}m`;
 }
 
 export {getRandomArrayElement, formatDate, formatTime, differenceTime, formatDateFull};
