@@ -1,20 +1,20 @@
 import BoardPresenter from './presenter/board-presenter.js';
-import RouteView from './view/route-view.js';
-import {render,RenderPosition} from './render.js';
+import TripModel from './model/trip-model.js';
 
-const siteMainElement = document.querySelector('.page-body');
-const siteSortElement = siteMainElement.querySelector('.trip-events');
-const siteInfoElement = siteMainElement.querySelector('.trip-main');
-const siteFilterElement = siteMainElement.querySelector('.trip-controls__filters');
+const sortElement = document.querySelector('.trip-events');
+const infoElement = document.querySelector('.trip-main');
+const filterElement = document.querySelector('.trip-controls__filters');
+
+const tripModel = new TripModel();
+tripModel.init();
 
 
 const boardPresenter = new BoardPresenter({
-  sortContainer: siteSortElement,
-  headerContainer: siteFilterElement,
-  editContainer: siteSortElement,
-  listContainer: siteSortElement
+  routeContainer: infoElement,
+  sortContainer: sortElement,
+  filterContainer: filterElement,
+  listContainer: sortElement,
+  tripModel: tripModel,
 });
 
 boardPresenter.init();
-
-render(new RouteView(), siteInfoElement, RenderPosition.AFTERBEGIN);
