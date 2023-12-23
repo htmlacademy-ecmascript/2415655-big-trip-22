@@ -6,9 +6,8 @@ import EditPointView from '../view/edit-point-view.js';
 import RouteView from '../view/route-view.js';
 import {render,RenderPosition} from '../render.js';
 import { getDefaultPoint } from '../const.js';
-import AbstractView from '../framework/view/abstract-view.js';
 
-export default class BoardPresenter extends AbstractView {
+export default class BoardPresenter {
   #filterContainer = null;
   #sortContainer = null;
   #listContainer = null;
@@ -26,8 +25,7 @@ export default class BoardPresenter extends AbstractView {
   #boardTrip = [];
 
 
-  constructor(filterContainer, sortContainer, listContainer, routeContainer, tripModel) {
-    super();
+  constructor({filterContainer, sortContainer, listContainer, routeContainer, tripModel}) {
     this.#filterContainer = filterContainer;
     this.#sortContainer = sortContainer;
     this.#listContainer = listContainer;
@@ -44,17 +42,18 @@ export default class BoardPresenter extends AbstractView {
     render(this.#sortComponent, this.#sortContainer);
     render(this.#filterComponent, this.#filterContainer);
     render(this.#addListComponent, this.#listContainer);
-    render(new EditPointView(getDefaultPoint(), destinations, offers), this.#addListComponent.element());
-    render(new EditPointView(points[0], destinations, offers), this.#addListComponent.element());
+    render(new EditPointView(getDefaultPoint(), destinations, offers), this.#addListComponent.element);
+    render(new EditPointView(points[0], destinations, offers), this.#addListComponent.element);
+
 
     for (const point of points) {
-      this.#renderTrip(point, destinations, offers);
+      render(new PointView(point, destinations, offers), this.#addListComponent.element);
     }
   }
 
-  #renderTrip(trip) {
-    const tripComponent = new PointView(trip);
+  // #renderTrip(trip) {
+  //   const tripComponent = new PointView(trip);
 
-    render(tripComponent, this.#addListComponent.element);
-  }
+  //   render(tripComponent, this.#addListComponent.element);
+  // }
 }
