@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { EVENT_TYPES } from '../const.js';
-import { formatDateFull } from '../utils.js';
+import { formatDateFull } from '../utils/event.js';
 
 const createEditPoint = (point, destinations, offers) => {
   const pointDestination = destinations.find((dest) => dest.id === point.destination);

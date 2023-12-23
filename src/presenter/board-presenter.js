@@ -4,6 +4,7 @@ import PointView from '../view/point-view.js';
 import ContainerListView from '../view/container-list-view.js';
 import EditPointView from '../view/edit-point-view.js';
 import RouteView from '../view/route-view.js';
+import NoEventView from '../view/no-event-view.js';
 import { RenderPosition, render, replace } from '../framework/render.js';
 //import { getDefaultPoint } from '../const.js';
 export default class BoardPresenter {
@@ -83,6 +84,11 @@ export default class BoardPresenter {
     render(this.#addListComponent, this.#listContainer);
     //render(new EditPointView(getDefaultPoint(), destinations, offers), this.#addListComponent.element);
     //render(new EditPointView(points[0], destinations, offers), this.#addListComponent.element);
+
+    if (points.length === 0) {
+      render(new NoEventView(), this.#sortContainer);
+      return;
+    }
 
     for (const point of points) {
       this.#renderTrip(point, destinations, offers);
