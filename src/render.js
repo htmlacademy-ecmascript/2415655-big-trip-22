@@ -1,3 +1,5 @@
+import AbstractView from './framework/view/abstract-view.js';
+
 const RenderPosition = {
   BEFOREBEGIN: 'beforebegin',
   AFTERBEGIN: 'afterbegin',
@@ -16,4 +18,21 @@ function render(component, container, place = RenderPosition.BEFOREEND) {
   container.insertAdjacentElement(place, component.element);
 }
 
-export {RenderPosition, createElement, render};
+function replace(newComponent, oldComponent) {
+  if (!(newComponent instanceof AbstractView && oldComponent instanceof AbstractView)) {
+    throw new Error('Can replace only components');
+  }
+
+  const newElement = newComponent.element;
+  const oldElement = oldComponent.element;
+
+  const parent = oldElement.parentElement;
+
+  if (parent === null) {
+    throw new Error('Parent element doesn\'t exist');
+  }
+
+  parent.replaceChild(newElement, oldElement);
+}
+
+export {RenderPosition, createElement, render, replace};

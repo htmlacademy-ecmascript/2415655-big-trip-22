@@ -2,6 +2,7 @@ import AbstractView from '../framework/view/abstract-view.js';
 import { formatDate, formatTime, differenceTime } from '../utils.js';
 
 const createPointTemplate = (point, destinations, offers) => {
+  console.log(offers)
   const {basePrice, isFavorite, dateFrom, dateTo, type} = point;
   const typeOffers = offers.find((off) => off.type === point.type).offers;
   const pointOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
@@ -56,14 +57,29 @@ export default class PointView extends AbstractView{
   #destinations = null;
   #offers = null;
 
-  constructor(point, destinations, offers) {
+  #handleEditClick = null;
+
+  constructor({point, destinations, offers, onEditClick}) {
     super();
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
+
+    this.#handleEditClick = onEditClick;
+
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#editClickHandler);
+
   }
+
 
   get template() {
     return createPointTemplate(this.#point, this.#destinations, this.#offers);
   }
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleEditClick();
+  };
+
+
 }
