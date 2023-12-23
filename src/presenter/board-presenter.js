@@ -5,8 +5,7 @@ import ContainerListView from '../view/container-list-view.js';
 import EditPointView from '../view/edit-point-view.js';
 import RouteView from '../view/route-view.js';
 import { RenderPosition, render, replace } from '../framework/render.js';
-import { getDefaultPoint } from '../const.js';
-
+//import { getDefaultPoint } from '../const.js';
 export default class BoardPresenter {
   #filterContainer = null;
   #sortContainer = null;
@@ -18,12 +17,7 @@ export default class BoardPresenter {
 
   #sortComponent = new SortView();
   #filterComponent = new FilterView();
-  // #editComponent = new EditPointView();
-  // #addPointComponent = new PointView();
   #routComponent = new RouteView();
-
-  #boardTrip = [];
-
 
   constructor({filterContainer, sortContainer, listContainer, routeContainer, tripModel}) {
     this.#filterContainer = filterContainer;
@@ -34,21 +28,7 @@ export default class BoardPresenter {
   }
 
   init() {
-    const offers = this.#tripModel.offers;
-    const destinations = this.#tripModel.destinations;
-    const points = this.#tripModel.points;
-
-    render(this.#routComponent, this.#routeContainer, RenderPosition.AFTERBEGIN);
-    render(this.#sortComponent, this.#sortContainer);
-    render(this.#filterComponent, this.#filterContainer);
-    render(this.#addListComponent, this.#listContainer);
-    //render(new EditPointView(getDefaultPoint(), destinations, offers), this.#addListComponent.element);
-    //  render(new EditPointView(points[0], destinations, offers), this.#addListComponent.element);
-
-
-    for (const point of points) {
-      this.#renderTrip(point, destinations, offers);
-    }
+    this.#renderApp();
   }
 
   #renderTrip(point, destinations, offers) {
@@ -90,5 +70,22 @@ export default class BoardPresenter {
 
     render(tripComponent, this.#addListComponent.element);
 
+  }
+
+  #renderApp() {
+    const offers = this.#tripModel.offers;
+    const destinations = this.#tripModel.destinations;
+    const points = this.#tripModel.points;
+
+    render(this.#routComponent, this.#routeContainer, RenderPosition.AFTERBEGIN);
+    render(this.#sortComponent, this.#sortContainer);
+    render(this.#filterComponent, this.#filterContainer);
+    render(this.#addListComponent, this.#listContainer);
+    //render(new EditPointView(getDefaultPoint(), destinations, offers), this.#addListComponent.element);
+    //render(new EditPointView(points[0], destinations, offers), this.#addListComponent.element);
+
+    for (const point of points) {
+      this.#renderTrip(point, destinations, offers);
+    }
   }
 }

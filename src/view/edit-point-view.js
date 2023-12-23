@@ -3,7 +3,6 @@ import { EVENT_TYPES } from '../const.js';
 import { formatDateFull } from '../utils.js';
 
 const createEditPoint = (point, destinations, offers) => {
-  console.log(destinations)
   const pointDestination = destinations.find((dest) => dest.id === point.destination);
   const typeOffers = offers.find((off) => off.type === point.type).offers;
   const pointOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
