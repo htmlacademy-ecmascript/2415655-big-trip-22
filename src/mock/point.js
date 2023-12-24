@@ -16,8 +16,8 @@ export const points = [
   {
     id: 'f4b62099-293f-4c3d-a702-94eec4a2802c',
     basePrice: 2300,
-    dateFrom: '2019-02-10T02:55:56.845Z',
-    dateTo: '2019-02-10T04:22:13.375Z',
+    dateFrom: '2029-02-10T02:55:56.845Z',
+    dateTo: '2029-02-10T04:22:13.375Z',
     destination: '2',
     isFavorite: false,
     offers: [
@@ -41,7 +41,7 @@ export const points = [
     dateFrom: '2019-05-10T05:55:56.845Z',
     dateTo: '2019-05-10T12:22:13.375Z',
     destination: '3',
-    isFavorite: false,
+    isFavorite: true,
     offers: [],
     type: 'bus'
   }
