@@ -1,42 +1,97 @@
-import FilterView from '../view/filter-view.js';
+//import FilterView from '../view/filter-view.js';
 import SortView from '../view/sort-view.js';
 import PointView from '../view/point-view.js';
 import ContainerListView from '../view/container-list-view.js';
 import EditPointView from '../view/edit-point-view.js';
 import RouteView from '../view/route-view.js';
-import {render,RenderPosition} from '../render.js';
-import { getDefaultPoint } from '../const.js';
+import NoEventView from '../view/no-event-view.js';
+import { RenderPosition, render, replace } from '../framework/render.js';
+//import { getDefaultPoint } from '../const.js';
 export default class BoardPresenter {
-  addListComponent = new ContainerListView();
+  #filterContainer = null;
+  #sortContainer = null;
+  #listContainer = null;
+  #routeContainer = null;
+  #tripModel = null;
 
-  sortComponent = new SortView();
-  filterComponent = new FilterView();
-  editComponent = new EditPointView();
-  addPointComponent = new PointView();
-  routComponent = new RouteView();
+  #addListComponent = new ContainerListView();
+
+  #sortComponent = new SortView();
+  // #filterComponent = new FilterView();
+  #routComponent = new RouteView();
 
   constructor({filterContainer, sortContainer, listContainer, routeContainer, tripModel}) {
-    this.filterContainer = filterContainer;
-    this.sortContainer = sortContainer;
-    this.listContainer = listContainer;
-    this.routeContainer = routeContainer;
-    this.tripModel = tripModel;
+    this.#filterContainer = filterContainer;
+    this.#sortContainer = sortContainer;
+    this.#listContainer = listContainer;
+    this.#routeContainer = routeContainer;
+    this.#tripModel = tripModel;
   }
 
   init() {
-    const offers = this.tripModel.getOffers();
-    const destinations = this.tripModel.getDestinations();
-    const points = this.tripModel.getPoints();
+    this.#renderApp();
+  }
 
-    render(this.routComponent, this.routeContainer, RenderPosition.AFTERBEGIN);
-    render(this.sortComponent, this.sortContainer);
-    render(this.filterComponent, this.filterContainer);
-    render(this.addListComponent, this.listContainer);
-    render(new EditPointView(getDefaultPoint(), destinations, offers), this.addListComponent.getElement());
-    render(new EditPointView(points[2], destinations, offers), this.addListComponent.getElement());
+  #renderTrip(point, destinations, offers) {
+    const escKeyDownHandler = (evt) => {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        replaceFormToCard();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    };
+
+    const tripComponent = new PointView({
+      point,
+      destinations,
+      offers,
+      onEditClick: () => {
+        replaceCardToForm();
+        document.addEventListener('keydown', escKeyDownHandler);
+      }
+    });
+
+    const tripEditComponent = new EditPointView({
+      point,
+      destinations,
+      offers,
+      onFormClick: () => {
+        replaceFormToCard();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    });
+
+    function replaceCardToForm() {
+      replace(tripEditComponent, tripComponent);
+    }
+
+    function replaceFormToCard() {
+      replace(tripComponent, tripEditComponent);
+    }
+
+    render(tripComponent, this.#addListComponent.element);
+
+  }
+
+  #renderApp() {
+    const offers = this.#tripModel.offers;
+    const destinations = this.#tripModel.destinations;
+    const points = this.#tripModel.points;
+
+    render(this.#routComponent, this.#routeContainer, RenderPosition.AFTERBEGIN);
+    render(this.#sortComponent, this.#sortContainer);
+    // render(this.#filterComponent, this.#filterContainer);
+    render(this.#addListComponent, this.#listContainer);
+    //render(new EditPointView(getDefaultPoint(), destinations, offers), this.#addListComponent.element);
+    //render(new EditPointView(points[0], destinations, offers), this.#addListComponent.element);
+
+    if (points.length === 0) {
+      render(new NoEventView(), this.#sortContainer);
+      return;
+    }
 
     for (const point of points) {
-      render(new PointView(point, destinations, offers), this.addListComponent.getElement());
+      this.#renderTrip(point, destinations, offers);
     }
   }
 }

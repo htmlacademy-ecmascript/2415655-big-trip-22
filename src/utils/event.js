@@ -9,11 +9,6 @@ const DATE_FORMAT = 'MMM D';
 const TIME_FORMAT = 'hh:mm';
 const DATE_FORMAT_FULL = 'DD/MM/YY hh:mm';
 
-
-function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
-
 function formatDate(dueDate) {
   return dueDate ? dayjs(dueDate).format(DATE_FORMAT) : '';
 }
@@ -32,5 +27,16 @@ function differenceTime(toTime, fromTime) {
   const diffResult = diffMin - diffHour * 60;
   return diffMin < 60 ? `${diffMin + 1}m` : `${diffHour}h ${diffResult + 1}m`;
 }
+function isEventFuture(dueDate) {
+  return dueDate && dayjs().isAfter(dueDate, 'D');
+}
 
-export {getRandomArrayElement, formatDate, formatTime, differenceTime, formatDateFull};
+function isEventToday(dueDate) {
+  return dueDate && dayjs(dueDate).isSame(dayjs(), 'D');
+}
+
+function isEventPast(dueDate) {
+  return dueDate && dayjs(dueDate).isBefore(dayjs(), 'D');
+}
+
+export {formatDate, formatTime, differenceTime, formatDateFull, isEventFuture, isEventToday, isEventPast };

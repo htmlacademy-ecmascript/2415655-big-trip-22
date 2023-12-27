@@ -2,29 +2,34 @@ import {destinations} from '../mock/destinations.js';
 import {offers} from '../mock/offers.js';
 import {points} from '../mock/point.js';
 
+// const COUNT_TRIP = 7;
 export default class TripModel {
+  #points = null;
+  #destinations = null;
+  #offers = null;
+
   consrtuctor() {
-    this.destinations = [];
-    this.offers = [];
-    this.points = [];
+    this.#destinations = [];
+    this.#offers = [];
+    this.#points = [];
   }
 
   init() {
-    this.destinations = destinations;
-    this.offers = offers;
-    this.points = points;
+    this.#destinations = destinations;
+    this.#offers = offers;
+    this.#points = points;
   }
 
-  getPoints() {
-    return this.points;
+  get points() {
+    return this.#points;
   }
 
-  getDestinations() {
-    return this.destinations;
+  get destinations() {
+    return this.#destinations;
   }
 
-  getOffers() {
-    return this.offers;
+  get offers() {
+    return this.#offers;
   }
 
 }

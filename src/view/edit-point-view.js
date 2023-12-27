@@ -1,8 +1,8 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { EVENT_TYPES } from '../const.js';
-import { formatDateFull } from '../utils.js';
+import { formatDateFull } from '../utils/event.js';
 
-const createEditPoint = (point,destinations,offers) => {
+const createEditPoint = (point, destinations, offers) => {
   const pointDestination = destinations.find((dest) => dest.id === point.destination);
   const typeOffers = offers.find((off) => off.type === point.type).offers;
   const pointOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
@@ -111,26 +111,33 @@ const createEditPoint = (point,destinations,offers) => {
            `;
 };
 
-export default class EditPointView {
-  constructor(point, destinations, offers) {
-    this.point = point;
-    this.destinations = destinations;
-    this.offers = offers;
+export default class EditPointView extends AbstractView{
+  #point = null;
+  #destinations = null;
+  #offers = null;
+
+  #handleEditClick = null;
+
+
+  constructor({point, destinations, offers, onFormClick}) {
+    super();
+    this.#point = point;
+    this.#destinations = destinations;
+    this.#offers = offers;
+
+    this.#handleEditClick = onFormClick;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formClickHandler);
   }
 
-  getTemplate() {
-    return createEditPoint(this.point, this.destinations, this.offers);
+  get template() {
+    return createEditPoint(this.#point, this.#destinations, this.#offers);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
+  #formClickHandler = (evt) => {
+    evt.preventDefault();
+    // eslint-disable-next-line no-unused-expressions
+    this.#handleEditClick();
+  };
 
-    return this.element;
-  }
 
-  removeElement() {
-    this.element = null;
-  }
 }
