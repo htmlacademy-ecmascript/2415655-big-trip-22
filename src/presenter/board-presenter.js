@@ -1,4 +1,3 @@
-//import FilterView from '../view/filter-view.js';
 import SortView from '../view/sort-view.js';
 import PointView from '../view/point-view.js';
 import ContainerListView from '../view/container-list-view.js';
@@ -8,7 +7,6 @@ import NoEventView from '../view/no-event-view.js';
 import { RenderPosition, render, replace } from '../framework/render.js';
 //import { getDefaultPoint } from '../const.js';
 export default class BoardPresenter {
-  #filterContainer = null;
   #sortContainer = null;
   #listContainer = null;
   #routeContainer = null;
@@ -17,11 +15,9 @@ export default class BoardPresenter {
   #addListComponent = new ContainerListView();
 
   #sortComponent = new SortView();
-  // #filterComponent = new FilterView();
   #routComponent = new RouteView();
 
-  constructor({filterContainer, sortContainer, listContainer, routeContainer, tripModel}) {
-    this.#filterContainer = filterContainer;
+  constructor({sortContainer, listContainer, routeContainer, tripModel}) {
     this.#sortContainer = sortContainer;
     this.#listContainer = listContainer;
     this.#routeContainer = routeContainer;
@@ -80,10 +76,8 @@ export default class BoardPresenter {
 
     render(this.#routComponent, this.#routeContainer, RenderPosition.AFTERBEGIN);
     render(this.#sortComponent, this.#sortContainer);
-    // render(this.#filterComponent, this.#filterContainer);
     render(this.#addListComponent, this.#listContainer);
     //render(new EditPointView(getDefaultPoint(), destinations, offers), this.#addListComponent.element);
-    //render(new EditPointView(points[0], destinations, offers), this.#addListComponent.element);
 
     if (points.length === 0) {
       render(new NoEventView(), this.#sortContainer);

@@ -135,7 +135,6 @@ export default class EditPointView extends AbstractView{
 
   #formClickHandler = (evt) => {
     evt.preventDefault();
-    // eslint-disable-next-line no-unused-expressions
     this.#handleEditClick();
   };
 
