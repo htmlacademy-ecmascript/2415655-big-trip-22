@@ -1,4 +1,5 @@
 import BoardPresenter from './presenter/board-presenter.js';
+
 import TripModel from './model/trip-model.js';
 import {generateFilter} from './mock/filter.js';
 import FilterView from './view/filter-view.js';
@@ -14,9 +15,8 @@ tripModel.init();
 const boardPresenter = new BoardPresenter({
   routeContainer: infoElement,
   sortContainer: sortElement,
-  //filterContainer: filterElement,
   listContainer: sortElement,
-  tripModel: tripModel,
+  tripModel: tripModel
 });
 
 const filters = generateFilter(tripModel.points);

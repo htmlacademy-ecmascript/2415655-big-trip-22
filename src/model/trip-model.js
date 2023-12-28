@@ -2,7 +2,6 @@ import {destinations} from '../mock/destinations.js';
 import {offers} from '../mock/offers.js';
 import {points} from '../mock/point.js';
 
-// const COUNT_TRIP = 7;
 export default class TripModel {
   #points = null;
   #destinations = null;
