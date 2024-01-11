@@ -1,21 +1,26 @@
 import SortView from '../view/sort-view.js';
-import PointView from '../view/point-view.js';
 import ContainerListView from '../view/container-list-view.js';
-import EditPointView from '../view/edit-point-view.js';
+import PointPresenter from './point-presenter.js';
 import RouteView from '../view/route-view.js';
 import NoEventView from '../view/no-event-view.js';
-import { RenderPosition, render, replace } from '../framework/render.js';
+import { RenderPosition, render} from '../framework/render.js';
+import {updateItem} from '../utils/common.js';
+//Форма по дефолту
 //import { getDefaultPoint } from '../const.js';
+const TASK_COUNT_PER_STEP = 8;
 export default class BoardPresenter {
   #sortContainer = null;
   #listContainer = null;
   #routeContainer = null;
   #tripModel = null;
+  #renderedTaskCount = TASK_COUNT_PER_STEP;
 
-  #addListComponent = new ContainerListView();
+  #containerComponent = new ContainerListView();
 
   #sortComponent = new SortView();
   #routComponent = new RouteView();
+
+  #pointPresenters = new Map();
 
   constructor({sortContainer, listContainer, routeContainer, tripModel}) {
     this.#sortContainer = sortContainer;
@@ -29,44 +34,31 @@ export default class BoardPresenter {
   }
 
   #renderTrip(point, destinations, offers) {
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceFormToCard();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    const tripComponent = new PointView({
-      point,
-      destinations,
-      offers,
-      onEditClick: () => {
-        replaceCardToForm();
-        document.addEventListener('keydown', escKeyDownHandler);
-      }
+    const pointPresenter = new PointPresenter({
+      containerComponent: this.#containerComponent.element,
+      onDataChange: this.#handleTaskChange,
+      onModeChange: this.#handleModeChange
     });
 
-    const tripEditComponent = new EditPointView({
-      point,
-      destinations,
-      offers,
-      onFormClick: () => {
-        replaceFormToCard();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    });
+    pointPresenter.init(point, destinations, offers);
+    this.#pointPresenters.set(point.id, pointPresenter);
+  }
 
-    function replaceCardToForm() {
-      replace(tripEditComponent, tripComponent);
-    }
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
 
-    function replaceFormToCard() {
-      replace(tripComponent, tripEditComponent);
-    }
+  };
 
-    render(tripComponent, this.#addListComponent.element);
 
+  #handleTaskChange = (updatedTask) => {
+    this.#containerComponent = updateItem(this.#containerComponent, updatedTask);
+    this.#pointPresenters.get(updatedTask.id).init(updatedTask);
+  };
+
+  #clearTaskList() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+    this.#renderedTaskCount = TASK_COUNT_PER_STEP;
   }
 
   #renderApp() {
@@ -76,7 +68,8 @@ export default class BoardPresenter {
 
     render(this.#routComponent, this.#routeContainer, RenderPosition.AFTERBEGIN);
     render(this.#sortComponent, this.#sortContainer);
-    render(this.#addListComponent, this.#listContainer);
+    render(this.#containerComponent, this.#listContainer);
+    //Форма по дефолту
     //render(new EditPointView(getDefaultPoint(), destinations, offers), this.#addListComponent.element);
 
     if (points.length === 0) {

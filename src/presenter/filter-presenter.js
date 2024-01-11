@@ -3,10 +3,10 @@ import {render} from '../framework/render.js';
 import TripModel from '../model/trip-model.js';
 import {generateFilter} from '../mock/filter.js';
 
-export default class BoardPresenter {
+export default class FilterPresenter {
   #filterContainer = null;
 
-  constructor({ filterContainer}) {
+  constructor({ filterContainer }) {
     this.#filterContainer = filterContainer;
   }
 
