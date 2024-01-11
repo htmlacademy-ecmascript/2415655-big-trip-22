@@ -1,8 +1,7 @@
 import {destinations} from '../mock/destinations.js';
 import {offers} from '../mock/offers.js';
-import {points} from '../mock/point.js';
+import {getRandomTrip} from '../mock/point.js';
 
-// const COUNT_TRIP = 7;
 export default class TripModel {
   #points = null;
   #destinations = null;
@@ -17,7 +16,7 @@ export default class TripModel {
   init() {
     this.#destinations = destinations;
     this.#offers = offers;
-    this.#points = points;
+    this.#points = getRandomTrip();
   }
 
   get points() {
