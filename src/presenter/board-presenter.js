@@ -17,7 +17,8 @@ export default class BoardPresenter {
 
   #containerComponent = new ContainerListView();
 
-  #sortComponent = new SortView();
+  // #sortComponent = new SortView();
+  #sortComponent = null;
   #routComponent = new RouteView();
 
   #pointPresenters = new Map();
@@ -60,6 +61,11 @@ export default class BoardPresenter {
     this.#pointPresenters.clear();
     this.#renderedTaskCount = TASK_COUNT_PER_STEP;
   }
+  #handleSortTypeChange = (sortType) => {
+    // - Сортируем задачи
+    // - Очищаем список
+    // - Рендерим список заново
+  };
 
   #renderApp() {
     const offers = this.#tripModel.offers;
@@ -67,6 +73,10 @@ export default class BoardPresenter {
     const points = this.#tripModel.points;
 
     render(this.#routComponent, this.#routeContainer, RenderPosition.AFTERBEGIN);
+
+    this.#sortComponent = new SortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
     render(this.#sortComponent, this.#sortContainer);
     render(this.#containerComponent, this.#listContainer);
     //Форма по дефолту
