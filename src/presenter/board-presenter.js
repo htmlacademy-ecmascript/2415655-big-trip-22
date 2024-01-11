@@ -5,6 +5,8 @@ import RouteView from '../view/route-view.js';
 import NoEventView from '../view/no-event-view.js';
 import { RenderPosition, render} from '../framework/render.js';
 import {updateItem} from '../utils/common.js';
+import {sortTaskUp, sortTaskDown} from '../utils/event.js';
+import {SortType} from '../const.js';
 //Форма по дефолту
 //import { getDefaultPoint } from '../const.js';
 const TASK_COUNT_PER_STEP = 8;
@@ -22,6 +24,9 @@ export default class BoardPresenter {
   #routComponent = new RouteView();
 
   #pointPresenters = new Map();
+  #currentSortType = SortType.DEFAULT;
+  #sourcedBoardTasks = [];
+  #boardTasks = [];
 
   constructor({sortContainer, listContainer, routeContainer, tripModel}) {
     this.#sortContainer = sortContainer;
@@ -31,6 +36,9 @@ export default class BoardPresenter {
   }
 
   init() {
+    this.#boardTasks = [...this.#tripModel.points];
+    this.#sourcedBoardTasks = [...this.#tripModel.points];
+
     this.#renderApp();
   }
 
@@ -53,18 +61,43 @@ export default class BoardPresenter {
 
   #handleTaskChange = (updatedTask) => {
     this.#containerComponent = updateItem(this.#containerComponent, updatedTask);
+    this.#sourcedBoardTasks = updateItem(this.#sourcedBoardTasks, updatedTask);
     this.#pointPresenters.get(updatedTask.id).init(updatedTask);
   };
+
+  #sortTasks(sortType) {
+    // 2. Этот исходный массив задач необходим,
+    // потому что для сортировки мы будем мутировать
+    // массив в свойстве _boardTasks
+    switch (sortType) {
+      case SortType.DATE_UP:
+        this.#boardTasks.sort(sortTaskUp);
+        break;
+      case SortType.DATE_DOWN:
+        this.#boardTasks.sort(sortTaskDown);
+        break;
+      default:
+        // 3. А когда пользователь захочет "вернуть всё, как было",
+        // мы просто запишем в _boardTasks исходный массив
+        this.#boardTasks = [...this.#sourcedBoardTasks];
+    }
+
+    this.#currentSortType = sortType;
+  }
+
 
   #clearTaskList() {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
     this.#renderedTaskCount = TASK_COUNT_PER_STEP;
   }
+
   #handleSortTypeChange = (sortType) => {
-    // - Сортируем задачи
-    // - Очищаем список
-    // - Рендерим список заново
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortTasks(sortType);
   };
 
   #renderApp() {
