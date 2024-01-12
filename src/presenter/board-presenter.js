@@ -98,6 +98,8 @@ export default class BoardPresenter {
     }
 
     this.#sortTasks(sortType);
+    this.#clearTaskList();
+    this.#renderTrip();
   };
 
   #renderApp() {
