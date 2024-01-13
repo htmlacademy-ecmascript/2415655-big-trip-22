@@ -18,13 +18,20 @@ const FilterType = {
   PAST: 'past'
 };
 
-const SortType = [
-  'day',
-  'event',
-  'time',
-  'price',
-  'offers'
-];
+// const SortType = [
+//   'day',
+//   'event',
+//   'time',
+//   'price',
+//   'offers'
+// ];
+const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offers',
+};
 
 export {EVENT_TYPES, CITIES, FilterType, SortType};
 

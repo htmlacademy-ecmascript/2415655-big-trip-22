@@ -16,9 +16,7 @@ function createSortItemTemplate(type, isChecked, count) {
   );
 }
 function createSortTemplate() {
-  const sortItemsTemplate = SortType
-    .map((index) => createSortItemTemplate(index))
-    .join('');
+  const sortItemsTemplate = Object.values(SortType).map((item) => createSortItemTemplate(item)).join('');
 
   return (
     `<form class="trip-filters" action="#" method="get">

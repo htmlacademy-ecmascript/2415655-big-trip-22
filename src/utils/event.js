@@ -39,34 +39,9 @@ function isEventPast(dueDate) {
   return dueDate && dayjs(dueDate).isBefore(dayjs(), 'D');
 }
 
-// Функция помещает задачи без даты в конце списка,
-// возвращая нужный вес для колбэка sort
-function getWeightForNullDate(dateA, dateB) {
-  if (dateA === null && dateB === null) {
-    return 0;
-  }
+const sortDate = (a, b) => dayjs(b.dateTo).diff(b.dateFrom) - dayjs(a.dateTo).diff(a.dateFrom);
 
-  if (dateA === null) {
-    return 1;
-  }
+const sortPrice = (a, b) => b.basePrice - a.basePrice;
 
-  if (dateB === null) {
-    return -1;
-  }
 
-  return null;
-}
-
-function sortTaskUp(taskA, taskB) {
-  const weight = getWeightForNullDate(taskA.dueDate, taskB.dueDate);
-
-  return weight ?? dayjs(taskA.dueDate).diff(dayjs(taskB.dueDate));
-}
-
-function sortTaskDown(taskA, taskB) {
-  const weight = getWeightForNullDate(taskA.dueDate, taskB.dueDate);
-
-  return weight ?? dayjs(taskB.dueDate).diff(dayjs(taskA.dueDate));
-}
-
-export {formatDate, formatTime, differenceTime, formatDateFull, isEventFuture, isEventToday, isEventPast, sortTaskUp, sortTaskDown };
+export {formatDate, formatTime, differenceTime, formatDateFull, isEventFuture, isEventToday, isEventPast, sortDate, sortPrice };
