@@ -35,6 +35,13 @@ export default class SortView extends AbstractView{
     this.#handleSortTypeChange = onSortTypeChange;
 
     this.element.addEventListener('click', this.#sortTypeChangeHandler);
+
+    // document.addEventListener("click", function(e) {
+    //   if (e.target.className=="trip-sort__btn") {
+    //    alert("click");
+    //    //ваши действия
+    //   }
+    // });
   }
 
   get template() {
@@ -42,11 +49,14 @@ export default class SortView extends AbstractView{
   }
 
   #sortTypeChangeHandler = (evt) => {
-    if (evt.target.tagName !== 'A') {
+
+    if (evt.target.tagName !== 'INPUT') {
       return;
     }
 
     evt.preventDefault();
     this.#handleSortTypeChange(evt.target.dataset.sortType);
+
   };
 }
+

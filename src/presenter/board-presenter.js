@@ -3,7 +3,7 @@ import ContainerListView from '../view/container-list-view.js';
 import PointPresenter from './point-presenter.js';
 import RouteView from '../view/route-view.js';
 import NoEventView from '../view/no-event-view.js';
-import { RenderPosition, render} from '../framework/render.js';
+import {RenderPosition, render} from '../framework/render.js';
 import {updateItem} from '../utils/common.js';
 import {sortTaskUp, sortTaskDown} from '../utils/event.js';
 import {SortType} from '../const.js';
@@ -65,11 +65,11 @@ export default class BoardPresenter {
     this.#pointPresenters.get(updatedTask.id).init(updatedTask);
   };
 
-  #sortTasks(sortType) {
+  #sortTasks(type) {
     // 2. Этот исходный массив задач необходим,
     // потому что для сортировки мы будем мутировать
     // массив в свойстве _boardTasks
-    switch (sortType) {
+    switch (type) {
       case SortType.DATE_UP:
         this.#boardTasks.sort(sortTaskUp);
         break;
@@ -81,10 +81,7 @@ export default class BoardPresenter {
         // мы просто запишем в _boardTasks исходный массив
         this.#boardTasks = [...this.#sourcedBoardTasks];
     }
-
-    this.#currentSortType = sortType;
   }
-
 
   #clearTaskList() {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
@@ -92,15 +89,45 @@ export default class BoardPresenter {
     this.#renderedTaskCount = TASK_COUNT_PER_STEP;
   }
 
-  #handleSortTypeChange = (sortType) => {
-    if (this.#currentSortType === sortType) {
-      return;
-    }
-
-    this.#sortTasks(sortType);
+  #handleSortTypeChange = (type) => {
+    this.#sortTasks(type);
     this.#clearTaskList();
-    this.#renderTrip();
+    this.#renderApp();
   };
+
+  // #sortPoints(type) {
+  //   switch (type) {
+  //     case SortTypes.TIME:
+  //       this.#points.sort(sortByTime);
+  //       break;
+  //     case SortTypes.PRICE:
+  //       this.#points.sort(sortByPrice);
+  //       break;
+  //     default:
+  //       this.#points = [...this.#originalPoints];
+  //   }
+  // }
+
+
+
+  // #renderSort() {
+  //   this.#sortListComponent = new SortListView({ onSortTypeChange: this.#sortTypeChangeHandle});
+  //   render(this.#sortListComponent, this.#tripContainer);
+  // }
+
+  // #clearPointList() {
+  //   this.#pointPresenters.forEach((presenter) => presenter.destroy());
+  //   this.#pointPresenters.clear();
+  // }
+
+  // #sortTypeChangeHandle = (type) => {
+  //   this.#sortPoints(type);
+  //   this.#clearPointList();
+  //   this.#renderPointsList();
+  // };
+
+
+
 
   #renderApp() {
     const offers = this.#tripModel.offers;
