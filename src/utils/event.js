@@ -39,4 +39,9 @@ function isEventPast(dueDate) {
   return dueDate && dayjs(dueDate).isBefore(dayjs(), 'D');
 }
 
-export {formatDate, formatTime, differenceTime, formatDateFull, isEventFuture, isEventToday, isEventPast };
+const sortDate = (a, b) => dayjs(b.dateTo).diff(b.dateFrom) - dayjs(a.dateTo).diff(a.dateFrom);
+
+const sortPrice = (a, b) => b.basePrice - a.basePrice;
+
+
+export {formatDate, formatTime, differenceTime, formatDateFull, isEventFuture, isEventToday, isEventPast, sortDate, sortPrice };
