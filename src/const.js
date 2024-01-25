@@ -19,5 +19,3 @@ const FilterType = {
 };
 
 export {EVENT_TYPES, CITIES, FilterType};
-
-
