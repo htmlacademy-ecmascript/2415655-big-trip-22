@@ -148,6 +148,8 @@ export default class EditPointView extends AbstractStatefulView{
   _restoreHandlers() {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formClickHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+
 
  //   this.element.querySelector('.event__field-group--price').addEventListener('input', this.#priceInputHandler);
 
@@ -166,23 +168,24 @@ export default class EditPointView extends AbstractStatefulView{
     this.#handleEditClick(EditPointView.parsePointToState(this._state));
   };
 
-  #formSubmitHandler = (evt) => {
-    evt.preventDefault();
-    this.#onFormSubmit(EditPointView.parseStateToPoint(this._state));
-  };
-
   #typeChangeHandler = (evt) => {
-    event.preventDefault();
+    evt.preventDefault();
 
     this.updateElement({
       type: evt.target.value
     });
   };
 
+  #destinationChangeHandler = (event) => {
+    this.updateElement({
+      destination: this.#destinations.find((destination) => destination.name === event.target.value).id,
+    });
+  };
+
   static parsePointToState (point) {
     const state = {...point};
 
-   // state.offers = new Set(state.offers);
+    // state.offers = new Set(state.offers);
 
     return state;
   }
