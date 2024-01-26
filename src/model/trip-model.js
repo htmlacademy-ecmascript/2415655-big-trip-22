@@ -1,8 +1,9 @@
+import Observable from '../framework/observable.js';
 import {destinations} from '../mock/destinations.js';
 import {offers} from '../mock/offers.js';
 import {getRandomTrip} from '../mock/point.js';
 
-export default class TripModel {
+export default class TripModel extends Observable {
   #points = null;
   #destinations = null;
   #offers = null;
