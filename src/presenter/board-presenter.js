@@ -4,7 +4,6 @@ import PointPresenter from './point-presenter.js';
 import RouteView from '../view/route-view.js';
 import NoEventView from '../view/no-event-view.js';
 import {RenderPosition, render} from '../framework/render.js';
-import {updateItem} from '../utils/common.js';
 import {sortDate, sortPrice} from '../utils/event.js';
 import {SortType} from '../const.js';
 //Форма по дефолту
@@ -23,8 +22,7 @@ export default class BoardPresenter {
 
   #pointPresenters = new Map();
   #currentSortType = SortType.DEFAULT;
-  #sourcedBoardPoints = [];
-  #boardPoints = [];
+
 
   constructor({sortContainer, listContainer, routeContainer, tripModel}) {
     this.#sortContainer = sortContainer;
@@ -33,13 +31,17 @@ export default class BoardPresenter {
     this.#tripModel = tripModel;
   }
 
-  get tasks() {
+  get points() {
+    switch (this.#currentSortType) {
+      case SortType.DATE_UP:
+        return [...this.#tripModel.points].sort(sortDate);
+      case SortType.DATE_DOWN:
+        return [...this.#tripModel.points].sort(sortDate);
+    }
     return this.#tripModel.points;
   }
 
   init() {
-    this.#boardPoints = [...this.#tripModel.points];
-    this.#sourcedBoardPoints = [...this.#tripModel.points];
     this.#renderRoute();
     this.#renderSort();
     this.#renderPointsContainer();
@@ -63,29 +65,10 @@ export default class BoardPresenter {
 
 
   #handleTaskChange = (updatedPoint) => {
-    this.#containerComponent = updateItem(this.#boardPoints, updatedPoint);
-    this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
+    //здесь будем вызывать обновление модели
     this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
   };
 
-  #sortPoints = (sortType) => {
-    // 2. Этот исходный массив задач необходим,
-    // потому что для сортировки мы будем мутировать
-    // массив в свойстве _boardTasks
-    switch (sortType) {
-      case SortType.DAY:
-        this.#boardPoints.sort(sortDate);
-        break;
-      case SortType.PRICE:
-        this.#boardPoints.sort(sortPrice);
-        break;
-      default:
-        // 3. А когда пользователь захочет "вернуть всё, как было",
-        // мы просто запишем в _boardTasks исходный массив
-        this.#boardPoints = [...this.#sourcedBoardPoints];
-    }
-    this.#currentSortType = sortType;
-  };
 
   #clearPointList() {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
@@ -98,7 +81,7 @@ export default class BoardPresenter {
       return;
     }
 
-    this.#sortPoints(sortType);
+    this.#currentSortType = sortType;
     this.#clearPointList();
     this.#renderPoints();
   };
@@ -118,6 +101,10 @@ export default class BoardPresenter {
     render(this.#containerComponent, this.#listContainer);
   }
 
+  // #renderTasks(tasks) {
+  //   tasks.forEach((task) => this.#renderTask(task));
+  // }
+
   #renderPoints() {
     const offers = this.#tripModel.offers;
     const destinations = this.#tripModel.destinations;
@@ -131,7 +118,7 @@ export default class BoardPresenter {
       return;
     }
 
-    this.#boardPoints.forEach((point) => {
+    points.forEach((point) => {
       this.#renderTrip(point, destinations, offers);
     });
   }
