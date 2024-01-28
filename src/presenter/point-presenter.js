@@ -1,6 +1,7 @@
 import PointView from '../view/point-view.js';
 import EditPointView from '../view/edit-point-view.js';
 import { render, replace, remove } from '../framework/render.js';
+import {UserAction, UpdateType} from '../const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -13,8 +14,6 @@ export default class PointPresenter {
   #tripComponent = null;
   #tripEditComponent = null;
   #handleDataChange = null;
-  #handleFavoriteClick = null;
-  #handleArchiveClick = null;
 
   #handleModeChange = null;
   #mode = Mode.DEFAULT;
@@ -44,6 +43,11 @@ export default class PointPresenter {
       destinations,
       offers,
       onEditClick: () => {
+        // this.#handleDataChange(
+        //   UserAction.UPDATE_TASK,
+        //   UpdateType.MINOR,
+        //   point,
+        // );
         this.#replaceCardToForm();
         document.addEventListener('keydown', escKeyDownHandler);
       },
@@ -58,9 +62,18 @@ export default class PointPresenter {
       destinations,
       offers,
       onFormClick: () => {
+        // this.#handleDataChange(
+        //   UserAction.UPDATE_TASK,
+        //   UpdateType.MINOR,
+        //   point,
+        // );
         this.#replaceFormToCard();
         document.removeEventListener('keydown', escKeyDownHandler);
-      }
+      },
+      onDeleteClick: () => {
+        this.#onDeleteClick();
+      },
+
     });
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
@@ -106,9 +119,31 @@ export default class PointPresenter {
     this.#mode = Mode.DEFAULT;
   }
 
-  #onFavoriteClick = () => {
-    this.#handleDataChange({...this.point, isFavorite: !this.point.isFavorite});
+
+  #handleFavoriteClick = () => {
+    this.#handleDataChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      {...this.point, isFavorite: !this.point.isFavorite},
+    );
   };
 
+  #handleArchiveClick = () => {
+    this.#handleDataChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      {...this.point, isFavorite: !this.point.isFavorite},
+    );
+  };
+
+  #onDeleteClick = (point) => {
+    this.#replaceFormToCard();
+    this.#handleDataChange(UserAction.DELETE_EVENT, UpdateType.MINOR, point);
+  };
+
+  #onFormSubmit = (actionType, updateType, newPoint) => {
+    this.#replaceFormToCard();
+    this.#handleDataChange(actionType, updateType, newPoint);
+  };
 
 }
