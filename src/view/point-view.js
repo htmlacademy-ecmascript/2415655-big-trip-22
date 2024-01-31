@@ -55,18 +55,18 @@ export default class PointView extends AbstractView{
   #point = null;
   #destinations = null;
   #offers = null;
-
+  #content = null;
   #handleEditClick = null;
 
   #handleFavoriteClick = null;
   #handleArchiveClick = null;
 
-  constructor({point, destinations, offers, onEditClick, onFavoriteClick, onArchiveClick}) {
+  constructor({point, destinations, offers, onEditClick, onFavoriteClick, onArchiveClick, content}) {
     super();
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
-
+    this.#content = content;
     this.#handleEditClick = onEditClick;
 
     this.#handleFavoriteClick = onFavoriteClick;
@@ -84,7 +84,7 @@ export default class PointView extends AbstractView{
 
 
   get template() {
-    return createPointTemplate(this.#point, this.#destinations, this.#offers);
+    return createPointTemplate(this.#content);
   }
 
   #editClickHandler = (evt) => {

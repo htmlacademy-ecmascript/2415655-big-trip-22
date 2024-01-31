@@ -43,11 +43,6 @@ export default class PointPresenter {
       destinations,
       offers,
       onEditClick: () => {
-        // this.#handleDataChange(
-        //   UserAction.UPDATE_TASK,
-        //   UpdateType.MINOR,
-        //   point,
-        // );
         this.#replaceCardToForm();
         document.addEventListener('keydown', escKeyDownHandler);
       },
@@ -62,17 +57,26 @@ export default class PointPresenter {
       destinations,
       offers,
       onFormClick: () => {
-        // this.#handleDataChange(
-        //   UserAction.UPDATE_TASK,
-        //   UpdateType.MINOR,
-        //   point,
-        // );
         this.#replaceFormToCard();
         document.removeEventListener('keydown', escKeyDownHandler);
       },
-      onDeleteClick: () => {
-        this.#onDeleteClick();
+      onTypeChange: (newType) => {
+        this.point.setNewType(newType);
       },
+      onDeleteClick: () => {
+        remove(this.#tripEditComponent);
+        // this.#replaceFormToCard();
+        // this.#handleDataChange(UserAction.DELETE_EVENT, UpdateType.MINOR, point);
+      },
+      onSaveForm:  (update) => {
+        this.#handleDataChange(
+          UserAction.UPDATE_EVENT,
+          UpdateType.MINOR,
+          update,
+        );
+        this.#replaceFormToCard();
+      },
+
 
     });
 
@@ -119,6 +123,11 @@ export default class PointPresenter {
     this.#mode = Mode.DEFAULT;
   }
 
+  #removeCard() {
+    remove(this.#tripComponent, this.#tripEditComponent);
+    this.#mode = Mode.DEFAULT;
+  }
+
 
   #handleFavoriteClick = () => {
     this.#handleDataChange(
@@ -136,14 +145,16 @@ export default class PointPresenter {
     );
   };
 
-  #onDeleteClick = (point) => {
-    this.#replaceFormToCard();
-    this.#handleDataChange(UserAction.DELETE_EVENT, UpdateType.MINOR, point);
-  };
+  // #onDeleteClick = (point) => {
+  //   this.#replaceFormToCard();
+  //   this.#handleDataChange(UserAction.DELETE_EVENT, UpdateType.MINOR, point);
+  // };
 
-  #onFormSubmit = (actionType, updateType, newPoint) => {
-    this.#replaceFormToCard();
-    this.#handleDataChange(actionType, updateType, newPoint);
-  };
+  // #onFormSubmit = (actionType, updateType, update) => {
+  //   remove(this.#tripComponent);
+  //   this.#handleDataChange(actionType, updateType, update);
+  // };
+
+
 
 }

@@ -74,13 +74,13 @@ export default class BoardPresenter {
     // updateType - тип изменений, нужно чтобы понять, что после нужно обновить
     // update - обновленные данные
     switch (actionType) {
-      case UserAction.UPDATE_TASK:
+      case UserAction.UPDATE_EVENT:
         this.#tripModel.updateTask(updateType, update);
         break;
-      case UserAction.ADD_TASK:
+      case UserAction.ADD_EVENT:
         this.#tripModel.addTask(updateType, update);
         break;
-      case UserAction.DELETE_TASK:
+      case UserAction.DELETE_EVENT:
         this.#tripModel.deleteTask(updateType, update);
         break;
     }
