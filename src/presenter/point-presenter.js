@@ -68,10 +68,10 @@ export default class PointPresenter {
         // this.#replaceFormToCard();
         // this.#handleDataChange(UserAction.DELETE_EVENT, UpdateType.MINOR, point);
       },
-      onSaveForm:  (update) => {
+      onSaveForm:  (actionType, updateType,update) => {
         this.#handleDataChange(
-          UserAction.UPDATE_EVENT,
-          UpdateType.MINOR,
+          actionType,
+          updateType,
           update,
         );
         this.#replaceFormToCard();
