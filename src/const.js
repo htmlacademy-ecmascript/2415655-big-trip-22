@@ -24,5 +24,35 @@ const SortType = {
   PRICE: 'price',
   OFFERS: 'offers',
 };
+const ModeType = {
+  DEFAULT: 'DEFAULT',
+  EDIT: 'EDIT',
+  NEW: 'NEW',
+};
 
-export {EVENT_TYPES, CITIES, FilterType, SortType};
+const UserAction = {
+  UPDATE_EVENT: 'UPDATE_EVENT',
+  ADD_EVENT: 'ADD_EVENT',
+  DELETE_EVENT: 'DELETE_EVENT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+  INIT: 'INIT',
+};
+
+const BLANK_POINT = {
+  'id': 0,
+  'type': EVENT_TYPES[5].toLowerCase(),
+  'destination': '',
+  'dateFrom': '',
+  'dateTo': '',
+  'basePrice': 0,
+  'offers': [],
+  'isFavorite': false,
+};
+
+export {EVENT_TYPES, CITIES, FilterType, SortType, UserAction, UpdateType, ModeType, BLANK_POINT};
+
