@@ -55,3 +55,4 @@ const BLANK_POINT = {
 };
 
 export {EVENT_TYPES, CITIES, FilterType, SortType, UserAction, UpdateType, ModeType, BLANK_POINT};
+

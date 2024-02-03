@@ -137,6 +137,7 @@ export default class EditPointView extends AbstractStatefulView{
   #onSaveForm = null;
   #mode = null;
   constructor({point = BLANK_POINT, destinations, offers, onFormClick, onFormSubmit, handleChangeType, onDeleteClick, onSaveClick, onSaveForm, mode}) {
+
     super();
     this.#point = point;
     this.#destinations = destinations;
@@ -243,6 +244,7 @@ export default class EditPointView extends AbstractStatefulView{
     this.#onSaveForm(actionType, updateType, this._state);
 
   };
+
 
   #formClickHandler = (evt) => {
     evt.preventDefault();
